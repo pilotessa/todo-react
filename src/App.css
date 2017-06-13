@@ -1,0 +1,10 @@
+@import url(~react-md/dist/react-md.teal-pink.min.css);
+.app {
+  margin-left: auto;
+  margin-right: auto; }
+
+.task button {
+  display: none; }
+
+.task:hover button {
+  display: block; }

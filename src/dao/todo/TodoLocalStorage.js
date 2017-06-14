@@ -1,5 +1,5 @@
 export default (function () {
-    const TASKS_KEY = 'TASK_LIST';
+    const TASKS_KEY = 'TODO_REACT';
 
     function readData() {
         const todoListStringified = localStorage.getItem(TASKS_KEY) || '[]',

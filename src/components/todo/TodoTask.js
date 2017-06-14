@@ -3,8 +3,13 @@ import { Button, FontIcon, ListItem } from 'react-md';
 import './TodoTask.css';
 
 class TodoTask extends Component {
-	onTaskDeleteClicked = () => {
+	onTaskClicked = () => {
+        this.props.toggleTaskState(this.props.task);
+	}
+
+	onTaskDeleteClicked = event => {
 		this.props.deleteTask(this.props.task);
+		event.stopPropagation();
 	}
 
     render() {
@@ -12,7 +17,14 @@ class TodoTask extends Component {
             taskStyles = this.props.task.active ? {} : {textDecoration: 'line-through'};
 
         return (
-            <ListItem className="task" leftIcon={taskIcon} primaryText={this.props.task.value} active={this.props.task.active} style={taskStyles}>
+            <ListItem
+                className="task"
+                leftIcon={taskIcon}
+                primaryText={this.props.task.value}
+                active={this.props.task.active}
+                onClick={this.onTaskClicked}
+                style={taskStyles}
+            >
                 <Button icon secondary onClick={this.onTaskDeleteClicked}>close</Button>
             </ ListItem>
         );

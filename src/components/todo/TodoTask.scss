@@ -1,0 +1,11 @@
+.task {
+  button {
+    display: none;
+  }
+
+  &:hover {
+    button {
+      display: block;
+    }
+  }
+}

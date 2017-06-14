@@ -1,0 +1,5 @@
+.task button {
+  display: none; }
+
+.task:hover button {
+  display: block; }

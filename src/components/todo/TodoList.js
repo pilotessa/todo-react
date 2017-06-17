@@ -27,10 +27,12 @@ class TodoList extends Component {
     }
 
     toggleTaskState = task => {
+        const tasks = Array.from(this.state.tasks);
+
         task.active = !task.active;
 
-        this.storage.updateData(this.state.tasks);
-        this.setState({tasks: this.state.tasks});
+        this.storage.updateData(tasks);
+        this.setState({tasks});
     }
 
     deleteTask = task => {
@@ -63,27 +65,16 @@ class TodoList extends Component {
     }
 
     render() {
-        const activeTasks = this.state.tasks.filter(task => task.active);
-
-        let tasksToShow;
-        switch (this.state.show) {
-            case 'active':
-                tasksToShow = this.state.tasks.filter(task => task.active);
-                break;
-            case 'completed':
-                tasksToShow = this.state.tasks.filter(task => !task.active);
-                break;
-            default:
-                tasksToShow = Array.from(this.state.tasks);
-        }
-        const tasksSection = tasksToShow.map(task => <TodoTask key={task.id} task={task} deleteTask={this.deleteTask} toggleTaskState={this.toggleTaskState} />);
+        const activeTasks = this.state.tasks.filter(task => task.active),
+            tasksSection = this.state.tasks.map(task => <TodoTask key={task.id} task={task} deleteTask={this.deleteTask} toggleTaskState={this.toggleTaskState} />),
+            className = 'list__show-' + this.state.show;
 
     	let listSection = null;
     	if (this.state.tasks.length) {
     		listSection = (
     		    <div>
                     <Divider />
-                    <List>
+                    <List className={className}>
                         {tasksSection}
                         <Divider />
                         <ListItem

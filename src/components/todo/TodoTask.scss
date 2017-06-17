@@ -9,3 +9,15 @@
     }
   }
 }
+
+.list__show-active {
+  .task-completed {
+    display: none;
+  }
+}
+
+.list__show-completed {
+  .task-active {
+    display: none;
+  }
+}

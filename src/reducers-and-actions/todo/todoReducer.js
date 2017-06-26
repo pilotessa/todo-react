@@ -21,7 +21,8 @@ function todoReducer(state = INITIAL_STATE, action) {
             return {...state, tasks: updatedTasks};
         }
     } else if (action.type === actions.ADD_TASK) {
-        const id = '_' + Math.random().toString(36).substr(2, 9),
+        const shortid = require('shortid'),
+            id = shortid.generate(),
             taskInfo = action.payload,
             newTask = {...taskInfo, id},
             updatedTasks = [...state.tasks, newTask];

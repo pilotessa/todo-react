@@ -8,7 +8,8 @@
     "react-dom": "^15.5.4",
     "react-md": "^1.0.15",
     "react-redux": "^5.0.5",
-    "redux": "^3.7.0"
+    "redux": "^3.7.0",
+    "shortid": "^2.2.8"
   },
   "devDependencies": {
     "node-sass-chokidar": "0.0.3",

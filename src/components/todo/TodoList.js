@@ -1,45 +1,22 @@
 import React, {Component} from "react";
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 import { Card, Divider, FontIcon, List, ListItem } from 'react-md';
 import MenuButton from 'react-md/lib/Menus/MenuButton';
-import _ from 'lodash';
-import TodoLocalStorage from "../../dao/todo/TodoLocalStorage";
 import TodoNewTaskForm from "./TodoNewTaskForm";
 import TodoTask from "./TodoTask";
+import {loadTasks, addTask, deleteTask, toggleTaskState, clearCompleted} from "./../../reducers-and-actions/todo/todoAction";
 
 class TodoList extends Component {
     constructor(props) {
         super(props);
-
-        this.storage = TodoLocalStorage;
-
         this.state = {
-            tasks: this.storage.readData(),
             show: window.location.hash === '#active' || window.location.hash === '#completed' ? window.location.hash.replace('#', '') : 'all'
         };
     }
 
-    addTask = taskInfo => {
-    	const newTask = {...taskInfo, id: this.state.tasks.length},
-    	    tasks = this.state.tasks.concat([newTask]);
-
-        this.storage.updateData(tasks);
-    	this.setState({tasks});
-    }
-
-    toggleTaskState = task => {
-        const tasks = Array.from(this.state.tasks);
-
-        task.active = !task.active;
-
-        this.storage.updateData(tasks);
-        this.setState({tasks});
-    }
-
-    deleteTask = task => {
-    	const tasks = _.without(this.state.tasks, task);
-
-        this.storage.updateData(tasks);
-    	this.setState({tasks});
+    componentDidMount() {
+        this.props.loadTasks();
     }
 
     showAll = () => {
@@ -57,20 +34,14 @@ class TodoList extends Component {
         this.setState({show: 'completed'});
     }
 
-    clearCompleted = () => {
-        const tasks = this.state.tasks.filter(task => task.active);
-
-        this.storage.updateData(tasks);
-        this.setState({tasks});
-    }
-
     render() {
-        const activeTasks = this.state.tasks.filter(task => task.active),
-            tasksSection = this.state.tasks.map(task => <TodoTask key={task.id} task={task} deleteTask={this.deleteTask} toggleTaskState={this.toggleTaskState} />),
+        const tasks = this.props.tasks,
+            activeTasks = tasks.filter(task => task.active),
+            tasksSection = tasks.map(task => <TodoTask key={task.id} task={task} deleteTask={this.props.deleteTask} toggleTaskState={this.props.toggleTaskState} />),
             className = 'list__show-' + this.state.show;
 
     	let listSection = null;
-    	if (this.state.tasks.length) {
+    	if (tasks.length) {
     		listSection = (
     		    <div>
                     <Divider />
@@ -108,7 +79,7 @@ class TodoList extends Component {
                             <ListItem
                                 leftIcon={<FontIcon>close</FontIcon>}
                                 primaryText="Clear completed"
-                                onClick={this.clearCompleted}
+                                onClick={this.props.clearCompleted}
                             />
                         </MenuButton>
                         </ListItem>
@@ -119,11 +90,27 @@ class TodoList extends Component {
 
         return (
             <Card>
-                <TodoNewTaskForm addTask={this.addTask} />
+                <TodoNewTaskForm addTask={this.props.addTask} />
                 {listSection}
             </Card>
         );
     }
 }
 
-export default TodoList;
+function mapStateToProps(storeState) {
+    return {
+        tasks: storeState.todo.tasks
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        loadTasks: bindActionCreators(loadTasks, dispatch),
+        addTask: bindActionCreators(addTask, dispatch),
+        deleteTask: bindActionCreators(deleteTask, dispatch),
+        toggleTaskState: bindActionCreators(toggleTaskState, dispatch),
+        clearCompleted: bindActionCreators(clearCompleted, dispatch),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TodoList);

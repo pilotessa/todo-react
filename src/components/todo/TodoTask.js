@@ -8,7 +8,7 @@ class TodoTask extends Component {
 	}
 
 	shouldComponentUpdate(nextProps) {
-		return nextProps != this.props;
+		return nextProps !== this.props;
 	}
 
 	onTaskDeleteClicked = event => {

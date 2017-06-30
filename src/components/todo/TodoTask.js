@@ -1,8 +1,8 @@
-import React, {Component} from "react";
+import React, {PureComponent} from "react";
 import { Button, FontIcon, ListItem } from 'react-md';
 import './TodoTask.css';
 
-class TodoTask extends Component {
+class TodoTask extends PureComponent {
 	onTaskClicked = () => {
         this.props.toggleTaskState(this.props.task);
 	}

@@ -2,6 +2,7 @@
   "name": "todo-react.local",
   "version": "0.1.0",
   "private": true,
+  "homepage" : "http://test.helene.com.ua/todo-react/",
   "dependencies": {
     "lodash": "^4.17.4",
     "react": "^15.5.4",
